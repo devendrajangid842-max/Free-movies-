@@ -41,7 +41,11 @@ footer{text-align:center;padding:20px;color:#aaa}
 <div id="movies">
 <p id="message">Loading movies...</p>
 </div>
-
+<div class="modal" id="modal">
+  <div class="modal-box">
+    <div id="detailsContent"></div>
+  </div>
+</div>
 <footer>© 2026 Movie World</footer>
 
 <script>
@@ -102,27 +106,44 @@ function searchMovies(){
     API_KEY + "&query=" + encodeURIComponent(q)
   );
 }
-
 async function details(id){
-  try{
-    const response = await fetch(
-      "https://api.themoviedb.org/3/movie/" + id +
-      "?api_key=" + API_KEY
-    );
+  const modal = document.getElementById("modal");
+  const content = document.getElementById("detailsContent");
 
-    if(!response.ok) throw Error("Details unavailable");
+  modal.style.display = "block";
+  content.innerHTML = "<p>Loading details...</p>";
 
-    const m = await response.json();
+  try {
+    const [movieResponse, videoResponse] = await Promise.all([
+      fetch("https://api.themoviedb.org/3/movie/" + id + "?api_key=" + API_KEY),
+      fetch("https://api.themoviedb.org/3/movie/" + id + "/videos?api_key=" + API_KEY)
+    ]);
 
-    alert(
-      m.title + "\n\n" +
-      "Release: " + (m.release_date || "Unknown") + "\n\n" +
-      "Rating: " + (m.vote_average?.toFixed(1) || "N/A") +
-      "\n\n" + (m.overview || "No description available.")
-    );
-  }catch(error){
-    alert("Movie details load nahi hui.");
+    if (!movieResponse.ok) throw Error("Details unavailable");
+
+    const m = await movieResponse.json();
+    const videoData = videoResponse.ok ? await videoResponse.json() : {results: []};
+
+    const trailer = videoData.results.find(v =>
+      v.site === "YouTube" && v.type === "Trailer" && v.key
+    ) || videoData.results.find(v => v.site === "YouTube" && v.key);
+
+    content.innerHTML = `
+      <button onclick="closeDetails()">✖ Close</button>
+      <h2>${m.title}</h2>
+      ${m.poster_path ? `<img src="https://image.tmdb.org/t/p/w500${m.poster_path}" style="width:150px">` : ""}
+      <p>⭐ Rating: ${m.vote_average?.toFixed(1) || "N/A"}/10</p>
+      <p>Release Date: ${m.release_date || "Unknown"}</p>
+      <p>Story: ${m.overview || "No description available."}</p>
+      ${trailer ? `<p><a href="https://www.youtube.com/watch?v=${trailer.key}" target="_blank" style="color:red">▶ Watch Trailer</a></p>` : "<p>Trailer nahi mila.</p>"}
+    `;
+  } catch (error) {
+    content.innerHTML = "<p>Details load nahi hui.</p><button onclick='closeDetails()'>Close</button>";
   }
+}
+
+function closeDetails(){
+  document.getElementById("modal").style.display = "none";
 }
 
 loadMovies(
