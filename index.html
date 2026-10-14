@@ -298,7 +298,7 @@ const r=await fetch("https://api.themoviedb.org/3/movie/"+id+"?api_key="+API_KEY
 const m=await r.json();
 alert(m.title+"\n\n"+m.overview);
 }
-}
+
 
 loadMovies("https://api.themoviedb.org/3/trending/movie/week?api_key="+API_KEY);
 </script>
