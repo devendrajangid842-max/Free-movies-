@@ -240,7 +240,66 @@ function watch(title) {
   alert(title + ": Add a legally hosted movie video to watch it here.");
 }
 </script>
+<script>
+  const API_KEY = 4675af0e47c901dc4e5d2c56818b4f6d
+const IMG = "https://image.tmdb.org/t/p/w500";
 
+document.body.innerHTML = `
+<style>
+body{margin:0;background:#111;color:white;font-family:Arial}
+header{background:#e50914;padding:22px;text-align:center}
+input{width:85%;padding:13px;margin:15px 0;border-radius:8px;border:0}
+h2{margin:20px 12px}
+#movies{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;padding:12px}
+.card{background:#222;border-radius:8px;overflow:hidden}
+.card img{width:100%;display:block}
+.info{padding:10px}
+button{background:#e50914;color:white;border:0;padding:10px;border-radius:5px}
+</style>
+<header>
+<h1>🎬 MOVIE WORLD</h1>
+<p>Discover Movies From Around The World</p>
+<input id="search" placeholder="Search any movie...">
+<button onclick="searchMovies()">Search</button>
+</header>
+<h2 id="heading">🔥 Trending Movies</h2>
+<div id="movies">Loading movies...</div>
+`;
+
+async function loadMovies(url){
+const box=document.getElementById("movies");
+box.innerHTML="Loading movies...";
+try{
+const r=await fetch(url);
+const d=await r.json();
+if(!d.results) throw Error();
+box.innerHTML=d.results.map(m=>`
+<div class="card">
+<img src="${m.poster_path?IMG+m.poster_path:''}" alt="${m.title||m.name}">
+<div class="info">
+<b>${m.title||m.name}</b>
+<p>⭐ ${m.vote_average?.toFixed(1)||"N/A"}</p>
+<p>${(m.release_date||"").slice(0,4)}</p>
+<button onclick="details(${m.id})">Details</button>
+</div></div>`).join("");
+}catch(e){box.innerHTML="Movies load nahi hui. API key check karo."}
+}
+
+function searchMovies(){
+const q=document.getElementById("search").value.trim();
+if(!q)return;
+document.getElementById("heading").innerText="🔎 Search Results";
+loadMovies("https://api.themoviedb.org/3/search/movie?api_key="+API_KEY+"&query="+encodeURIComponent(q));
+}
+
+async function details(id){
+const r=await fetch("https://api.themoviedb.org/3/movie/"+id+"?api_key="+API_KEY);
+const m=await r.json();
+alert(m.title+"\n\n"+m.overview);
+}
+
+loadMovies("https://api.themoviedb.org/3/trending/movie/week?api_key="+API_KEY);
+</script>
 </body>
 </html>
 </style>
