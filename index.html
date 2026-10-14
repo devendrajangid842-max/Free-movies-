@@ -103,6 +103,71 @@ footer {
   background: #151515;
   margin-top: 20px;
 }
+  /* Movie Cards Design */
+body {
+margin: 0;
+background: #111;
+color: white;
+font-family: Arial, sans-serif;
+}
+
+header {
+background: #e50914;
+text-align: center;
+padding: 25px 10px;
+}
+
+.container {
+padding: 20px;
+}
+
+.movie-grid {
+display: grid;
+grid-template-columns: repeat(3, 1fr);
+gap: 15px;
+}
+
+.movie-card {
+background: #222;
+border-radius: 10px;
+overflow: hidden;
+text-align: center;
+padding-bottom: 15px;
+}
+
+.movie-poster {
+background: #333;
+height: 150px;
+display: flex;
+align-items: center;
+justify-content: center;
+color: #aaa;
+}
+
+.movie-info {
+padding: 10px;
+}
+
+.watch-btn {
+background: #e50914;
+color: white;
+border: none;
+padding: 10px 15px;
+border-radius: 5px;
+cursor: pointer;
+}
+
+footer {
+text-align: center;
+padding: 20px;
+background: #222;
+}
+
+@media (max-width: 600px) {
+.movie-grid {
+grid-template-columns: repeat(2, 1fr);
+}
+}
 </style>
 </head>
 
