@@ -3,382 +3,317 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Movie World</title>
-
+<title>CineMax | Movie World</title>
 <style>
-* {
-  box-sizing: border-box;
-}
-
-body {
-  margin: 0;
-  background: #111;
-  color: white;
-  font-family: Arial, sans-serif;
-}
-
-header {
-  background: #e50914;
-  padding: 20px;
-  text-align: center;
-}
-
-header h1 {
-  margin: 0;
-}
-
-.search {
-  display: flex;
-  gap: 8px;
-  padding: 15px;
-}
-
-input {
-  flex: 1;
-  min-width: 0;
-  padding: 12px;
-  border: 0;
-  border-radius: 6px;
-}
-
-button {
-  background: #e50914;
-  color: white;
-  border: 0;
-  padding: 11px;
-  border-radius: 6px;
-  cursor: pointer;
-}
-
-h2 {
-  padding: 0 15px;
-}
-
-#movies {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 12px;
-  padding: 12px;
-}
-
-.card {
-  background: #222;
-  border-radius: 8px;
-  overflow: hidden;
-}
-
-.card img {
-  width: 100%;
-  display: block;
-}
-
-.info {
-  padding: 10px;
-}
-
-.info p {
-  color: #ccc;
-  font-size: 13px;
-}
-
-.info button {
-  width: 100%;
-}
-
-#message {
-  text-align: center;
-  padding: 20px;
-}
-
-footer {
-  text-align: center;
-  padding: 20px;
-  color: #aaa;
-}
-
-.modal {
-  display: none;
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.95);
-  overflow-y: auto;
-  padding: 15px;
-  z-index: 10;
-}
-
-.modal-box {
-  background: #222;
-  max-width: 650px;
-  margin: 15px auto;
-  padding: 18px;
-  border-radius: 10px;
-}
-
-.modal-box img {
-  width: 150px;
-  max-width: 100%;
-  border-radius: 8px;
-}
-
-.modal-box p {
-  line-height: 1.6;
-}
-
-.trailer {
-  width: 100%;
-  aspect-ratio: 16 / 9;
-  border: 0;
-  border-radius: 8px;
-}
-
-.close-button {
-  float: right;
-  margin-bottom: 15px;
-}
+*{box-sizing:border-box}
+body{margin:0;background:#080a10;color:#fff;font-family:Arial,sans-serif}
+header{padding:18px 5%;display:flex;align-items:center;justify-content:space-between;background:#10121b;position:sticky;top:0;z-index:10;gap:15px;flex-wrap:wrap}
+.logo{font-size:25px;font-weight:bold;color:#ff304f}
+.search{padding:12px;border-radius:25px;border:1px solid #333;background:#20222d;color:white;width:min(280px,100%)}
+.hero{padding:55px 6%;background:linear-gradient(90deg,#080a10,#080a10bb),linear-gradient(135deg,#471323,#11172c);min-height:220px}
+.hero h1{font-size:clamp(30px,5vw,48px);margin:10px 0}
+.hero p{color:#c2c4ce;max-width:550px;line-height:1.6}
+button{border:0;cursor:pointer;border-radius:8px;padding:10px 13px;font-weight:bold}
+.primary{background:#ff304f;color:white}
+.secondary{background:#272a38;color:white}
+nav{display:flex;gap:9px;overflow-x:auto;padding:15px 5%;white-space:nowrap}
+nav button{background:#1a1d28;color:#eee}
+nav button.active{background:#ff304f}
+main{padding:5px 5% 40px}
+.section-title{margin:28px 0 15px;font-size:22px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(145px,1fr));gap:17px}
+.card{background:#141722;border-radius:12px;overflow:hidden;transition:.2s;min-width:0}
+.card:hover{transform:translateY(-4px)}
+.poster{width:100%;aspect-ratio:2/3;object-fit:cover;background:#222}
+.card-info{padding:10px}
+.card h3{font-size:14px;line-height:1.4;margin:0 0 7px}
+.meta{font-size:12px;color:#b4b7c5;margin-bottom:10px}
+.actions{display:flex;gap:6px}
+.actions button{font-size:12px;padding:9px 6px;flex:1}
+.empty,.message{color:#b4b7c5;padding:15px 0}
+footer{text-align:center;padding:25px;color:#999;background:#10121b;font-size:13px}
+.modal{display:none;position:fixed;inset:0;background:#000d;z-index:30;overflow:auto;padding:20px}
+.modal-box{max-width:700px;margin:30px auto;background:#151824;border-radius:15px;padding:20px;position:relative}
+.close{float:right;background:#333;color:white}
+.detail-top{display:flex;gap:20px;margin-top:20px}
+.detail-poster{width:160px;max-width:40%;height:max-content;border-radius:10px}
+iframe{width:100%;aspect-ratio:16/9;border:0;border-radius:10px;margin-top:15px;background:#000}
+.hidden{display:none!important}
+@media(max-width:500px){header{padding:14px} .logo{font-size:21px}.hero{padding:35px 5%}.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.detail-top{gap:12px}.modal{padding:8px}.modal-box{padding:14px}}
 </style>
 </head>
-
 <body>
 
 <header>
-  <h1>🎬 MOVIE WORLD</h1>
-  <p>Discover Movies Around The World</p>
+  <div class="logo">🎬 CineMax</div>
+  <input class="search" id="searchInput" placeholder="Search movies..." />
 </header>
 
-<div class="search">
-  <input id="search" placeholder="Search any movie...">
-  <button onclick="searchMovies()">Search</button>
-</div>
+<section class="hero">
+  <p>YOUR MOVIE UNIVERSE</p>
+  <h1>Discover Your Next Movie</h1>
+  <p>Explore trending movies, new releases, ratings, stories and trailers in one place.</p>
+  <button class="primary" onclick="showSection('trending')">Explore Movies</button>
+</section>
 
-<h2 id="heading">🔥 Trending Movies</h2>
+<nav id="categories">
+  <button class="active" data-genre="all">All Movies</button>
+  <button data-genre="28">Action</button>
+  <button data-genre="35">Comedy</button>
+  <button data-genre="27">Horror</button>
+  <button data-genre="10749">Romance</button>
+  <button data-genre="878">Sci-Fi</button>
+  <button data-genre="16">Animation</button>
+  <button data-genre="bollywood">Bollywood</button>
+  <button data-genre="south">South Indian</button>
+  <button data-genre="favorites">❤️ Favorites</button>
+  <button data-genre="watchlist">📌 Watchlist</button>
+</nav>
 
-<div id="movies">
-  <p id="message">Loading movies...</p>
-</div>
+<main>
+  <section id="searchSection" class="hidden">
+    <h2 class="section-title">🔎 Search Results</h2>
+    <div class="grid" id="searchResults"></div>
+  </section>
 
-<div class="modal" id="modal">
+  <section id="trending">
+    <h2 class="section-title">🔥 Trending This Week</h2>
+    <div class="grid" id="trendingGrid"><p class="message">Loading movies...</p></div>
+  </section>
+
+  <section id="latest">
+    <h2 class="section-title">🆕 Latest Releases</h2>
+    <div class="grid" id="latestGrid"><p class="message">Loading movies...</p></div>
+  </section>
+
+  <section id="categorySection" class="hidden">
+    <h2 class="section-title" id="categoryTitle">Movies</h2>
+    <div class="grid" id="categoryGrid"></div>
+  </section>
+</main>
+
+<footer>🎬 CineMax — Discover movies, explore stories.</footer>
+
+<div class="modal" id="movieModal">
   <div class="modal-box">
-    <div id="detailsContent"></div>
+    <button class="close" onclick="closeModal()">✕ Close</button>
+    <div id="movieDetails"></div>
   </div>
 </div>
 
-<footer>© 2026 Movie World</footer>
-
 <script>
 const API_KEY = "4675af0e47c901dc4e5d2c56818b4f6d";
+const API = "https://api.themoviedb.org/3";
 const IMG = "https://image.tmdb.org/t/p/w500";
+const BACKDROP = "https://image.tmdb.org/t/p/w780";
 
-async function loadMovies(url) {
-  const container = document.getElementById("movies");
-  container.innerHTML = "<p id='message'>Loading movies...</p>";
+let favorites = JSON.parse(localStorage.getItem("cinemax_favorites") || "[]");
+let watchlist = JSON.parse(localStorage.getItem("cinemax_watchlist") || "[]");
+let currentMovies = [];
 
-  try {
-    const response = await fetch(url);
+async function getData(path) {
+  const response = await fetch(API + path + (path.includes("?") ? "&" : "?") + "api_key=" + API_KEY);
+  if (!response.ok) throw new Error("Movie data unavailable");
+  return response.json();
+}
 
-    if (!response.ok) {
-      throw new Error("Movies load nahi hui");
-    }
+function saveLists() {
+  localStorage.setItem("cinemax_favorites", JSON.stringify(favorites));
+  localStorage.setItem("cinemax_watchlist", JSON.stringify(watchlist));
+}
 
-    const data = await response.json();
-    container.innerHTML = "";
+function makeCard(movie) {
+  const poster = movie.poster_path ? IMG + movie.poster_path : "";
+  const isFav = favorites.includes(movie.id);
+  const isSaved = watchlist.includes(movie.id);
+  const title = movie.title || movie.name || "Untitled";
 
-    const movies = data.results || [];
-
-    if (movies.length === 0) {
-      container.innerHTML = "<p>No movies found.</p>";
-      return;
-    }
-
-    movies.forEach(function(movie) {
-      const card = document.createElement("div");
-      card.className = "card";
-
-      const poster = movie.poster_path
-        ? IMG + movie.poster_path
-        : "";
-
-      card.innerHTML = `
-        ${poster
-          ? `<img src="${poster}" alt="Movie poster" loading="lazy">`
-          : `<div style="padding:30px">Poster unavailable</div>`
-        }
-        <div class="info">
-          <h3></h3>
-          <p>⭐ Rating: ${
-            movie.vote_average
-              ? movie.vote_average.toFixed(1)
-              : "N/A"
-          }/10</p>
-          <button>Details</button>
+  return `
+    <article class="card">
+      ${poster ? `<img class="poster" src="${poster}" alt="${escapeHTML(title)}" loading="lazy">`
+      : `<div class="poster"></div>`}
+      <div class="card-info">
+        <h3>${escapeHTML(title)}</h3>
+        <div class="meta">⭐ ${Number(movie.vote_average || 0).toFixed(1)} · ${(movie.release_date || "").slice(0,4) || "N/A"}</div>
+        <div class="actions">
+          <button class="primary" onclick="showDetails(${movie.id})">Details</button>
+          <button class="secondary" onclick="toggleFavorite(${movie.id})">${isFav ? "❤️" : "♡"}</button>
+          <button class="secondary" onclick="toggleWatchlist(${movie.id})">${isSaved ? "✓" : "+"}</button>
         </div>
-      `;
+      </div>
+    </article>`;
+}
 
-      card.querySelector("h3").textContent =
-        movie.title || movie.name || "Untitled";
+function escapeHTML(value) {
+  return String(value || "").replace(/[&<>"']/g, c => ({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+  })[c]);
+}
 
-      card.querySelector("button").onclick = function() {
-        details(movie.id);
-      };
-
-      container.appendChild(card);
-    });
-
+async function loadMovies(path, elementId) {
+  const el = document.getElementById(elementId);
+  try {
+    const data = await getData(path);
+    const movies = data.results || [];
+    currentMovies = [...currentMovies, ...movies];
+    el.innerHTML = movies.length ? movies.map(makeCard).join("") : '<p class="message">No movies found.</p>';
   } catch (error) {
-    container.innerHTML =
-      "<p id='message'>Movies load nahi hui. Internet ya API key check karein.</p>";
+    el.innerHTML = '<p class="message">Movies could not load. Please check your internet connection and API key.</p>';
   }
 }
 
-function searchMovies() {
-  const query = document.getElementById("search").value.trim();
+function toggleFavorite(id) {
+  favorites = favorites.includes(id) ? favorites.filter(x => x !== id) : [...favorites, id];
+  saveLists();
+  refreshVisible();
+}
 
+function toggleWatchlist(id) {
+  watchlist = watchlist.includes(id) ? watchlist.filter(x => x !== id) : [...watchlist, id];
+  saveLists();
+  refreshVisible();
+}
+
+function refreshVisible() {
+  document.querySelectorAll(".grid").forEach(grid => {
+    const cards = grid.querySelectorAll(".card");
+    cards.forEach(card => {
+      const title = card.querySelector("h3")?.textContent;
+      const movie = currentMovies.find(m => (m.title || m.name) === title);
+      if (movie) {
+        const replacement = document.createElement("div");
+        replacement.innerHTML = makeCard(movie);
+        card.replaceWith(replacement.firstElementChild);
+      }
+    });
+  });
+}
+
+async function showDetails(id) {
+  const modal = document.getElementById("movieModal");
+  const details = document.getElementById("movieDetails");
+  modal.style.display = "block";
+  details.innerHTML = '<p class="message">Loading movie details...</p>';
+
+  try {
+    const movie = await getData("/movie/" + id);
+    const videos = await getData("/movie/" + id + "/videos");
+    const trailer = (videos.results || []).find(v => v.site === "YouTube" && v.type === "Trailer")
+      || (videos.results || []).find(v => v.site === "YouTube");
+
+    details.innerHTML = `
+      <div class="detail-top">
+        ${movie.poster_path ? `<img class="detail-poster" src="${IMG + movie.poster_path}" alt="">` : ""}
+        <div>
+          <h2>${escapeHTML(movie.title)}</h2>
+          <p>⭐ ${Number(movie.vote_average || 0).toFixed(1)} / 10</p>
+          <p>📅 ${escapeHTML(movie.release_date || "Release date unavailable")}</p>
+          <p>🎭 ${escapeHTML((movie.genres || []).map(g => g.name).join(", "))}</p>
+          <button class="primary" onclick="toggleFavorite(${movie.id})">❤️ Favorite</button>
+          <button class="secondary" onclick="toggleWatchlist(${movie.id})">📌 Watchlist</button>
+        </div>
+      </div>
+      <h3>📖 Story</h3>
+      <p>${escapeHTML(movie.overview || "Story details are not available.")}</p>
+      <h3>▶️ Official Trailer</h3>
+      ${trailer ? `<iframe src="https://www.youtube-nocookie.com/embed/${encodeURIComponent(trailer.key)}" title="Movie trailer" allowfullscreen loading="lazy"></iframe>`
+      : '<p class="message">No trailer available for this movie.</p>'}
+      <p class="meta">Movie information provided by TMDB.</p>`;
+  } catch (error) {
+    details.innerHTML = '<p class="message">Could not load details. Please try again.</p>';
+  }
+}
+
+function closeModal() {
+  document.getElementById("movieModal").style.display = "none";
+  document.getElementById("movieDetails").innerHTML = "";
+}
+
+document.getElementById("movieModal").addEventListener("click", e => {
+  if (e.target.id === "movieModal") closeModal();
+});
+
+function showSection(id) {
+  document.getElementById("searchSection").classList.add("hidden");
+  document.getElementById("categorySection").classList.add("hidden");
+  document.getElementById("trending").classList.toggle("hidden", id !== "trending");
+  document.getElementById("latest").classList.toggle("hidden", id !== "latest");
+  document.getElementById(id)?.scrollIntoView({behavior:"smooth"});
+}
+
+let searchTimer;
+document.getElementById("searchInput").addEventListener("input", e => {
+  clearTimeout(searchTimer);
+  const query = e.target.value.trim();
   if (!query) {
-    document.getElementById("heading").textContent =
-      "🔥 Trending Movies";
-
-    loadMovies(
-      "https://api.themoviedb.org/3/trending/movie/week?api_key=" +
-      API_KEY
-    );
+    document.getElementById("searchSection").classList.add("hidden");
+    document.getElementById("trending").classList.remove("hidden");
+    document.getElementById("latest").classList.remove("hidden");
     return;
   }
 
-  document.getElementById("heading").textContent =
-    "🔎 Search Results";
+  searchTimer = setTimeout(async () => {
+    document.getElementById("trending").classList.add("hidden");
+    document.getElementById("latest").classList.add("hidden");
+    document.getElementById("categorySection").classList.add("hidden");
+    document.getElementById("searchSection").classList.remove("hidden");
+    const el = document.getElementById("searchResults");
+    el.innerHTML = '<p class="message">Searching...</p>';
 
-  loadMovies(
-    "https://api.themoviedb.org/3/search/movie?api_key=" +
-    API_KEY + "&query=" + encodeURIComponent(query)
-  );
-}
+    try {
+      const data = await getData("/search/movie?query=" + encodeURIComponent(query));
+      currentMovies = [...currentMovies, ...(data.results || [])];
+      el.innerHTML = data.results.length ? data.results.map(makeCard).join("") : '<p class="message">No movies found.</p>';
+    } catch (error) {
+      el.innerHTML = '<p class="message">Search failed. Please try again.</p>';
+    }
+  }, 350);
+});
 
-async function details(id) {
-  const modal = document.getElementById("modal");
-  const content = document.getElementById("detailsContent");
+document.getElementById("categories").addEventListener("click", async e => {
+  const btn = e.target.closest("button[data-genre]");
+  if (!btn) return;
 
-  modal.style.display = "block";
-  content.innerHTML = "<p>Loading movie details...</p>";
+  document.querySelectorAll("#categories button").forEach(b => b.classList.remove("active"));
+  btn.classList.add("active");
+
+  const genre = btn.dataset.genre;
+  document.getElementById("searchInput").value = "";
+  document.getElementById("searchSection").classList.add("hidden");
+  document.getElementById("trending").classList.add("hidden");
+  document.getElementById("latest").classList.add("hidden");
+
+  const section = document.getElementById("categorySection");
+  const el = document.getElementById("categoryGrid");
+  section.classList.remove("hidden");
+  el.innerHTML = '<p class="message">Loading...</p>';
+
+  if (genre === "favorites" || genre === "watchlist") {
+    const ids = genre === "favorites" ? favorites : watchlist;
+    const movies = currentMovies.filter(m => ids.includes(m.id));
+    document.getElementById("categoryTitle").textContent = genre === "favorites" ? "❤️ Your Favorites" : "📌 Your Watchlist";
+    el.innerHTML = movies.length ? movies.map(makeCard).join("") : '<p class="message">No saved movies yet. Add movies using the ❤️ or + buttons.</p>';
+    return;
+  }
+
+  let path = "/discover/movie?sort_by=popularity.desc";
+  if (genre === "bollywood") path += "&with_original_language=hi&region=IN";
+  else if (genre === "south") path += "&with_original_language=ta|te|ml|kn";
+  else if (genre !== "all") path += "&with_genres=" + genre;
+
+  document.getElementById("categoryTitle").textContent = btn.textContent + " Movies";
 
   try {
-    const responses = await Promise.all([
-      fetch(
-        "https://api.themoviedb.org/3/movie/" +
-        id + "?api_key=" + API_KEY
-      ),
-      fetch(
-        "https://api.themoviedb.org/3/movie/" +
-        id + "/videos?api_key=" + API_KEY
-      )
-    ]);
-
-    if (!responses[0].ok) {
-      throw new Error("Details unavailable");
-    }
-
-    const movie = await responses[0].json();
-
-    const videoData = responses[1].ok
-      ? await responses[1].json()
-      : { results: [] };
-
-    const trailer =
-      videoData.results.find(function(video) {
-        return video.site === "YouTube" &&
-          video.type === "Trailer" &&
-          video.key;
-      }) ||
-      videoData.results.find(function(video) {
-        return video.site === "YouTube" && video.key;
-      });
-
-    content.innerHTML = `
-      <button class="close-button" onclick="closeDetails()">
-        ✖ Close
-      </button>
-
-      <div style="clear:both"></div>
-
-      <h2 style="padding:0"></h2>
-
-      <div id="moviePoster"></div>
-
-      <p id="rating"></p>
-      <p id="release"></p>
-      <p id="story"></p>
-
-      <h3>🎬 Movie Trailer</h3>
-      <div id="trailerBox"></div>
-    `;
-
-    content.querySelector("h2").textContent =
-      movie.title || "Movie Details";
-
-    document.getElementById("rating").textContent =
-      "⭐ Rating: " +
-      (movie.vote_average
-        ? movie.vote_average.toFixed(1)
-        : "N/A") + "/10";
-
-    document.getElementById("release").textContent =
-      "Release Date: " + (movie.release_date || "Unknown");
-
-    document.getElementById("story").textContent =
-      "Story: " +
-      (movie.overview || "No description available.");
-
-    if (movie.poster_path) {
-      const img = document.createElement("img");
-      img.src = IMG + movie.poster_path;
-      img.alt = "Movie poster";
-      document.getElementById("moviePoster").appendChild(img);
-    }
-
-    const trailerBox = document.getElementById("trailerBox");
-
-    if (trailer) {
-      const iframe = document.createElement("iframe");
-
-      iframe.className = "trailer";
-      iframe.src =
-        "https://www.youtube.com/embed/" +
-        encodeURIComponent(trailer.key);
-
-      iframe.title = "Movie trailer";
-      iframe.allow =
-        "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share";
-      iframe.allowFullscreen = true;
-
-      trailerBox.appendChild(iframe);
-    } else {
-      trailerBox.textContent = "Is movie ka trailer nahi mila.";
-    }
-
+    const data = await getData(path);
+    currentMovies = [...currentMovies, ...(data.results || [])];
+    el.innerHTML = data.results.length ? data.results.map(makeCard).join("") : '<p class="message">No movies found.</p>';
   } catch (error) {
-    content.innerHTML =
-      "<p>Details load nahi hui. Internet ya API key check karein.</p>" +
-      "<button onclick='closeDetails()'>Close</button>";
+    el.innerHTML = '<p class="message">Could not load this category.</p>';
   }
-}
+});
 
-function closeDetails() {
-  document.getElementById("modal").style.display = "none";
-  document.getElementById("detailsContent").innerHTML = "";
-}
-
-document.getElementById("search").addEventListener(
-  "keydown",
-  function(event) {
-    if (event.key === "Enter") {
-      searchMovies();
-    }
-  }
-);
-
-loadMovies(
-  "https://api.themoviedb.org/3/trending/movie/week?api_key=" +
-  API_KEY
-);
+loadMovies("/trending/movie/week", "trendingGrid");
+loadMovies("/movie/now_playing?region=IN", "latestGrid");
 </script>
-
 </body>
 </html>
