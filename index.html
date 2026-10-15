@@ -6,148 +6,377 @@
 <title>Movie World</title>
 
 <style>
-*{box-sizing:border-box}
-body{margin:0;background:#111;color:white;font-family:Arial}
-header{background:#e50914;padding:20px;text-align:center}
-header h1{margin:0}
-.search{display:flex;gap:8px;padding:15px}
-input{flex:1;min-width:0;padding:12px;border:0;border-radius:6px}
-button{background:#e50914;color:white;border:0;padding:11px;border-radius:6px;cursor:pointer}
-h2{padding:0 15px}
-#movies{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;padding:12px}
-.card{background:#222;border-radius:8px;overflow:hidden}
-.card img{width:100%;display:block;min-height:180px;object-fit:cover}
-.info{padding:10px}
-.info p{color:#ccc;font-size:13px}
-.info button{width:100%}
-#message{text-align:center;padding:20px}
-footer{text-align:center;padding:20px;color:#aaa}
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: #111;
+  color: white;
+  font-family: Arial, sans-serif;
+}
+
+header {
+  background: #e50914;
+  padding: 20px;
+  text-align: center;
+}
+
+header h1 {
+  margin: 0;
+}
+
+.search {
+  display: flex;
+  gap: 8px;
+  padding: 15px;
+}
+
+input {
+  flex: 1;
+  min-width: 0;
+  padding: 12px;
+  border: 0;
+  border-radius: 6px;
+}
+
+button {
+  background: #e50914;
+  color: white;
+  border: 0;
+  padding: 11px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+h2 {
+  padding: 0 15px;
+}
+
+#movies {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  padding: 12px;
+}
+
+.card {
+  background: #222;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.card img {
+  width: 100%;
+  display: block;
+}
+
+.info {
+  padding: 10px;
+}
+
+.info p {
+  color: #ccc;
+  font-size: 13px;
+}
+
+.info button {
+  width: 100%;
+}
+
+#message {
+  text-align: center;
+  padding: 20px;
+}
+
+footer {
+  text-align: center;
+  padding: 20px;
+  color: #aaa;
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.95);
+  overflow-y: auto;
+  padding: 15px;
+  z-index: 10;
+}
+
+.modal-box {
+  background: #222;
+  max-width: 650px;
+  margin: 15px auto;
+  padding: 18px;
+  border-radius: 10px;
+}
+
+.modal-box img {
+  width: 150px;
+  max-width: 100%;
+  border-radius: 8px;
+}
+
+.modal-box p {
+  line-height: 1.6;
+}
+
+.trailer {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border: 0;
+  border-radius: 8px;
+}
+
+.close-button {
+  float: right;
+  margin-bottom: 15px;
+}
 </style>
 </head>
 
 <body>
 
 <header>
-<h1>🎬 MOVIE WORLD</h1>
-<p>Discover Movies Around The World</p>
+  <h1>🎬 MOVIE WORLD</h1>
+  <p>Discover Movies Around The World</p>
 </header>
 
 <div class="search">
-<input id="search" placeholder="Search any movie...">
-<button onclick="searchMovies()">Search</button>
+  <input id="search" placeholder="Search any movie...">
+  <button onclick="searchMovies()">Search</button>
 </div>
 
 <h2 id="heading">🔥 Trending Movies</h2>
+
 <div id="movies">
-<p id="message">Loading movies...</p>
+  <p id="message">Loading movies...</p>
 </div>
+
 <div class="modal" id="modal">
   <div class="modal-box">
     <div id="detailsContent"></div>
   </div>
 </div>
+
 <footer>© 2026 Movie World</footer>
 
 <script>
 const API_KEY = "4675af0e47c901dc4e5d2c56818b4f6d";
 const IMG = "https://image.tmdb.org/t/p/w500";
 
-async function loadMovies(url){
-  const box = document.getElementById("movies");
-  box.innerHTML = "<p id='message'>Loading movies...</p>";
+async function loadMovies(url) {
+  const container = document.getElementById("movies");
+  container.innerHTML = "<p id='message'>Loading movies...</p>";
 
-  try{
+  try {
     const response = await fetch(url);
-    if(!response.ok) throw Error("API request failed");
+
+    if (!response.ok) {
+      throw new Error("Movies load nahi hui");
+    }
 
     const data = await response.json();
-    if(!data.results) throw Error("No movies found");
+    container.innerHTML = "";
 
-    const movies = data.results.filter(m => m.poster_path);
+    const movies = data.results || [];
 
-    if(movies.length === 0){
-      box.innerHTML = "<p>No movies found.</p>";
+    if (movies.length === 0) {
+      container.innerHTML = "<p>No movies found.</p>";
       return;
     }
 
-    box.innerHTML = movies.map(m => `
-      <div class="card">
-        <img src="${IMG + m.poster_path}"
-             alt="${m.title || m.name}"
-             loading="lazy">
-        <div class="info">
-          <b>${m.title || m.name}</b>
-          <p>⭐ ${m.vote_average?.toFixed(1) || "N/A"}</p>
-          <p>${(m.release_date || "").slice(0,4)}</p>
-          <button onclick="details(${m.id})">Details</button>
-        </div>
-      </div>
-    `).join("");
+    movies.forEach(function(movie) {
+      const card = document.createElement("div");
+      card.className = "card";
 
-  }catch(error){
-    box.innerHTML =
-      "<p id='message'>Movies load nahi hui. API key check karo.</p>";
+      const poster = movie.poster_path
+        ? IMG + movie.poster_path
+        : "";
+
+      card.innerHTML = `
+        ${poster
+          ? `<img src="${poster}" alt="Movie poster" loading="lazy">`
+          : `<div style="padding:30px">Poster unavailable</div>`
+        }
+        <div class="info">
+          <h3></h3>
+          <p>⭐ Rating: ${
+            movie.vote_average
+              ? movie.vote_average.toFixed(1)
+              : "N/A"
+          }/10</p>
+          <button>Details</button>
+        </div>
+      `;
+
+      card.querySelector("h3").textContent =
+        movie.title || movie.name || "Untitled";
+
+      card.querySelector("button").onclick = function() {
+        details(movie.id);
+      };
+
+      container.appendChild(card);
+    });
+
+  } catch (error) {
+    container.innerHTML =
+      "<p id='message'>Movies load nahi hui. Internet ya API key check karein.</p>";
   }
 }
 
-function searchMovies(){
-  const q = document.getElementById("search").value.trim();
+function searchMovies() {
+  const query = document.getElementById("search").value.trim();
 
-  if(!q){
-    document.getElementById("heading").innerText = "🔥 Trending Movies";
-    loadMovies("https://api.themoviedb.org/3/trending/movie/week?api_key=" + API_KEY);
+  if (!query) {
+    document.getElementById("heading").textContent =
+      "🔥 Trending Movies";
+
+    loadMovies(
+      "https://api.themoviedb.org/3/trending/movie/week?api_key=" +
+      API_KEY
+    );
     return;
   }
 
-  document.getElementById("heading").innerText = "🔎 Search Results";
+  document.getElementById("heading").textContent =
+    "🔎 Search Results";
 
   loadMovies(
     "https://api.themoviedb.org/3/search/movie?api_key=" +
-    API_KEY + "&query=" + encodeURIComponent(q)
+    API_KEY + "&query=" + encodeURIComponent(query)
   );
 }
-async function details(id){
+
+async function details(id) {
   const modal = document.getElementById("modal");
   const content = document.getElementById("detailsContent");
 
   modal.style.display = "block";
-  content.innerHTML = "<p>Loading details...</p>";
+  content.innerHTML = "<p>Loading movie details...</p>";
 
   try {
-    const [movieResponse, videoResponse] = await Promise.all([
-      fetch("https://api.themoviedb.org/3/movie/" + id + "?api_key=" + API_KEY),
-      fetch("https://api.themoviedb.org/3/movie/" + id + "/videos?api_key=" + API_KEY)
+    const responses = await Promise.all([
+      fetch(
+        "https://api.themoviedb.org/3/movie/" +
+        id + "?api_key=" + API_KEY
+      ),
+      fetch(
+        "https://api.themoviedb.org/3/movie/" +
+        id + "/videos?api_key=" + API_KEY
+      )
     ]);
 
-    if (!movieResponse.ok) throw Error("Details unavailable");
+    if (!responses[0].ok) {
+      throw new Error("Details unavailable");
+    }
 
-    const m = await movieResponse.json();
-    const videoData = videoResponse.ok ? await videoResponse.json() : {results: []};
+    const movie = await responses[0].json();
 
-    const trailer = videoData.results.find(v =>
-      v.site === "YouTube" && v.type === "Trailer" && v.key
-    ) || videoData.results.find(v => v.site === "YouTube" && v.key);
+    const videoData = responses[1].ok
+      ? await responses[1].json()
+      : { results: [] };
+
+    const trailer =
+      videoData.results.find(function(video) {
+        return video.site === "YouTube" &&
+          video.type === "Trailer" &&
+          video.key;
+      }) ||
+      videoData.results.find(function(video) {
+        return video.site === "YouTube" && video.key;
+      });
 
     content.innerHTML = `
-      <button onclick="closeDetails()">✖ Close</button>
-      <h2>${m.title}</h2>
-      ${m.poster_path ? `<img src="https://image.tmdb.org/t/p/w500${m.poster_path}" style="width:150px">` : ""}
-      <p>⭐ Rating: ${m.vote_average?.toFixed(1) || "N/A"}/10</p>
-      <p>Release Date: ${m.release_date || "Unknown"}</p>
-      <p>Story: ${m.overview || "No description available."}</p>
-      ${trailer ? `<p><a href="https://www.youtube.com/watch?v=${trailer.key}" target="_blank" style="color:red">▶ Watch Trailer</a></p>` : "<p>Trailer nahi mila.</p>"}
+      <button class="close-button" onclick="closeDetails()">
+        ✖ Close
+      </button>
+
+      <div style="clear:both"></div>
+
+      <h2 style="padding:0"></h2>
+
+      <div id="moviePoster"></div>
+
+      <p id="rating"></p>
+      <p id="release"></p>
+      <p id="story"></p>
+
+      <h3>🎬 Movie Trailer</h3>
+      <div id="trailerBox"></div>
     `;
+
+    content.querySelector("h2").textContent =
+      movie.title || "Movie Details";
+
+    document.getElementById("rating").textContent =
+      "⭐ Rating: " +
+      (movie.vote_average
+        ? movie.vote_average.toFixed(1)
+        : "N/A") + "/10";
+
+    document.getElementById("release").textContent =
+      "Release Date: " + (movie.release_date || "Unknown");
+
+    document.getElementById("story").textContent =
+      "Story: " +
+      (movie.overview || "No description available.");
+
+    if (movie.poster_path) {
+      const img = document.createElement("img");
+      img.src = IMG + movie.poster_path;
+      img.alt = "Movie poster";
+      document.getElementById("moviePoster").appendChild(img);
+    }
+
+    const trailerBox = document.getElementById("trailerBox");
+
+    if (trailer) {
+      const iframe = document.createElement("iframe");
+
+      iframe.className = "trailer";
+      iframe.src =
+        "https://www.youtube.com/embed/" +
+        encodeURIComponent(trailer.key);
+
+      iframe.title = "Movie trailer";
+      iframe.allow =
+        "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share";
+      iframe.allowFullscreen = true;
+
+      trailerBox.appendChild(iframe);
+    } else {
+      trailerBox.textContent = "Is movie ka trailer nahi mila.";
+    }
+
   } catch (error) {
-    content.innerHTML = "<p>Details load nahi hui.</p><button onclick='closeDetails()'>Close</button>";
+    content.innerHTML =
+      "<p>Details load nahi hui. Internet ya API key check karein.</p>" +
+      "<button onclick='closeDetails()'>Close</button>";
   }
 }
 
-function closeDetails(){
+function closeDetails() {
   document.getElementById("modal").style.display = "none";
+  document.getElementById("detailsContent").innerHTML = "";
 }
 
+document.getElementById("search").addEventListener(
+  "keydown",
+  function(event) {
+    if (event.key === "Enter") {
+      searchMovies();
+    }
+  }
+);
+
 loadMovies(
-  "https://api.themoviedb.org/3/trending/movie/week?api_key=" + API_KEY
+  "https://api.themoviedb.org/3/trending/movie/week?api_key=" +
+  API_KEY
 );
 </script>
 
