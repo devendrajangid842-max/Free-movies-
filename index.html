@@ -1,194 +1,134 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html lang="hi">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Free Movies | CineVerse</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#070b10">
+<title>CineMax — Movie Universe</title>
 <style>
-*{box-sizing:border-box}
-body{margin:0;background:#0b0b0f;color:#fff;font-family:Arial,sans-serif}
-header{padding:20px 5%;background:#111116;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
-.logo{font-size:25px;font-weight:bold;color:#e50914}
-nav{display:flex;gap:8px;flex-wrap:wrap}
-button{cursor:pointer;border:0;border-radius:7px;padding:10px 14px;background:#292932;color:#fff}
-button:hover{background:#e50914}
-.hero{padding:55px 5%;background:linear-gradient(90deg,#16131d,#291018);min-height:190px}
-.hero h1{font-size:36px;margin:0 0 12px}
-.search{display:flex;gap:8px;max-width:600px;margin-top:20px}
-input{min-width:0;flex:1;padding:13px;border:1px solid #444;border-radius:7px;background:#1c1c24;color:#fff;font-size:16px}
-main{padding:20px 5%}
-.section-title{margin-top:28px}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(145px,1fr));gap:17px}
-.card{background:#17171e;border-radius:10px;overflow:hidden;cursor:pointer;transition:.2s}
-.card:hover{transform:translateY(-4px)}
-.card img{width:100%;aspect-ratio:2/3;object-fit:cover;display:block;background:#222}
-.info{padding:10px}
-.info h3{font-size:14px;margin:0 0 8px;line-height:1.35}
-.info p{margin:0;color:#bbb;font-size:12px}
-.status{color:#bbb;padding:15px 0}
-footer{text-align:center;color:#999;padding:30px}
-.modal{display:none;position:fixed;inset:0;background:#000d;z-index:5;padding:20px;overflow:auto}
-.modal-box{max-width:700px;margin:30px auto;background:#191920;padding:20px;border-radius:12px}
-.modal-box img{width:140px;max-width:40%;float:left;margin:0 18px 12px 0;border-radius:8px}
-.close{float:right;background:#e50914}
-a{color:#ff747b}
-@media(max-width:500px){.hero h1{font-size:27px}.grid{grid-template-columns:repeat(2,minmax(0,1fr))}header{align-items:flex-start}}
+:root{--bg:#070b10;--panel:#0e151d;--panel2:#151f29;--line:#24313d;--text:#f5f7fa;--muted:#a5b2bf;--red:#f01635;--gold:#ffd35a}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--text);font:15px/1.45 Arial,Helvetica,sans-serif}button,input,select{font:inherit}button{cursor:pointer;color:inherit}.top{height:64px;display:flex;align-items:center;gap:20px;padding:0 22px;border-bottom:1px solid var(--line);background:#080d12;position:sticky;top:0;z-index:10}.brand{font-size:25px;font-weight:900;white-space:nowrap}.brand b{color:var(--red)}.search{display:flex;gap:8px;max-width:580px;flex:1;margin:auto}.search input{width:100%;min-width:0;background:#101923;border:1px solid #30404d;border-radius:30px;padding:12px 17px;color:white}.btn{background:#17232d;border:1px solid #30404d;border-radius:7px;padding:10px 13px}.btn:hover{border-color:var(--red)}.red{background:var(--red);border-color:var(--red);color:#fff}.shell{display:grid;grid-template-columns:188px minmax(0,1fr)}.side{border-right:1px solid var(--line);padding:15px 10px;min-height:calc(100vh - 64px)}.side button{display:block;width:100%;text-align:left;background:transparent;border:0;border-radius:7px;padding:12px;margin:2px 0}.side button:hover,.side button.active{background:#55121f}.side small{display:block;color:var(--muted);padding:22px 10px 5px}.main{min-width:0;padding:0 22px 35px}.hero{min-height:280px;margin:0 -22px;padding:35px;display:flex;align-items:center;position:relative;overflow:hidden;background:linear-gradient(90deg,#07090c 5%,#11151bba 55%,#07090c33),linear-gradient(135deg,#3b1019,#141c26 65%,#080b10)}.hero-bg{position:absolute;inset:0;background-size:cover;background-position:center;opacity:.42}.hero-copy{position:relative;max-width:560px}.eyebrow{color:#ff596f;font-weight:bold}.hero h1{font-size:clamp(29px,4vw,46px);line-height:1.1;margin:10px 0}.hero p{color:#e1e5e9;max-width:520px}.row{display:flex;gap:10px;flex-wrap:wrap;margin-top:17px}.section{margin-top:25px;scroll-margin-top:80px}.section-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px}.section-head h2{font-size:20px;margin:0}.grid{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:12px}.card{min-width:0;position:relative;background:var(--panel);border:1px solid #1e2a35;border-radius:8px;overflow:hidden;cursor:pointer;transition:transform .18s,border-color .18s}.card:hover{transform:translateY(-4px);border-color:#596b7b}.poster{display:block;width:100%;aspect-ratio:2/3;object-fit:cover;background:#18222b}.heart{position:absolute;top:7px;right:7px;border:0;border-radius:50%;background:#06090cdb;width:31px;height:31px;font-size:18px;color:white}.heart.saved{color:#ff4865}.cardinfo{padding:8px}.cardinfo h3{font-size:12px;line-height:1.35;margin:0 0 5px}.cardinfo p{font-size:11px;color:var(--muted);margin:3px 0}.rating{color:var(--gold)!important}.status{color:var(--muted);padding:18px 0}.toolbar{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}.toolbar select{background:var(--panel);color:var(--text);border:1px solid var(--line);border-radius:7px;padding:9px}.hidden{display:none!important}.modal{display:none;position:fixed;inset:0;background:#000d;z-index:30;padding:18px;overflow:auto}.modal.open{display:block}.modalbox{max-width:850px;margin:20px auto;background:var(--panel);border:1px solid var(--line);border-radius:12px;overflow:hidden}.modalbar{display:flex;justify-content:flex-end;padding:10px;border-bottom:1px solid var(--line)}.details{padding:20px}.detailgrid{display:grid;grid-template-columns:190px minmax(0,1fr);gap:22px}.detailposter{width:100%;border-radius:8px}.details p{color:var(--muted);line-height:1.65}.video{position:relative;aspect-ratio:16/9;width:100%;background:#000;margin-top:18px;border-radius:8px;overflow:hidden}.video iframe{width:100%;height:100%;border:0}.empty{padding:20px;border:1px solid var(--line);border-radius:8px;color:var(--muted)}footer{border-top:1px solid var(--line);padding:25px;color:var(--muted);font-size:13px;text-align:center}
+@media(max-width:1100px){.grid{grid-template-columns:repeat(5,minmax(0,1fr))}.shell{grid-template-columns:155px minmax(0,1fr)}}
+@media(max-width:720px){.top{height:auto;min-height:60px;padding:10px 12px;flex-wrap:wrap;gap:10px}.brand{font-size:22px}.search{order:3;flex-basis:100%;max-width:none}.shell{display:block}.side{min-height:0;display:flex;overflow-x:auto;gap:5px;padding:7px;position:sticky;top:105px;z-index:9;background:var(--bg);border-right:0;border-bottom:1px solid var(--line)}.side button{width:auto;white-space:nowrap;padding:9px}.side small{display:none}.main{padding:0 12px 25px}.hero{margin:0 -12px;padding:23px;min-height:250px}.grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}.section-head h2{font-size:18px}.detailgrid{grid-template-columns:100px minmax(0,1fr);gap:13px}.details{padding:13px}}
+@media(max-width:390px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 </style>
 </head>
 <body>
-<header>
-  <div class="logo">CINEVERSE</div>
-  <nav>
-    <button onclick="loadMovies('trending')">Trending</button>
-    <button onclick="loadMovies('latest')">Latest</button>
-    <button onclick="loadMovies('bollywood')">Bollywood</button>
-    <button onclick="loadMovies('hollywood')">Hollywood</button>
-    <button onclick="loadMovies('south')">South Indian</button>
-  </nav>
+<header class="top">
+  <div class="brand">▶ Cine<b>Max</b></div>
+  <form id="searchForm" class="search"><input id="searchInput" placeholder="Search movies, series, actors..." aria-label="Search movies"><button class="btn red" type="submit">Search</button></form>
+  <button id="themeBtn" class="btn" type="button" title="Toggle theme">☼</button>
 </header>
-
-<section class="hero">
-  <h1>Discover Your Next Movie</h1>
-  <p>Explore movies, ratings, stories and trailers.</p>
-  <div class="search">
-    <input id="query" placeholder="Search a movie..." onkeydown="if(event.key==='Enter')runSearch()">
-    <button onclick="runSearch()">Search</button>
-  </div>
-</section>
-
-<main>
-  <h2 class="section-title" id="heading">🔥 Trending Movies</h2>
-  <div id="status" class="status">Loading movies...</div>
-  <div id="movies" class="grid"></div>
-</main>
-
-<div id="modal" class="modal" onclick="if(event.target===this)closeDetails()">
-  <div class="modal-box">
-    <button class="close" onclick="closeDetails()">Close ✕</button>
-    <div id="details"></div>
-    <div style="clear:both"></div>
-  </div>
-</div>
-
-<footer>Movie information powered by TMDB. This site does not host movie files.</footer>
-
+<div class="shell">
+<aside class="side" id="sidebar">
+  <button class="active" data-page="home">⌂ Home</button><button data-page="trending">🔥 Trending</button><button data-page="latest">◷ Latest</button><button data-page="popular">🎬 Movies</button><button data-page="series">▣ Series</button><button data-page="bollywood">★ Bollywood</button><button data-page="hollywood">★ Hollywood</button><button data-page="south">▷ South Indian</button><button data-page="animation">✧ Animation</button><button data-page="mylist">♡ My List</button>
+  <small>DISCOVER</small><button data-page="action">Action</button><button data-page="comedy">Comedy</button><button data-page="horror">Horror</button><button data-page="romance">Romance</button><button data-page="scifi">Sci-Fi</button><button data-page="thriller">Thriller</button>
+</aside>
+<main class="main">
+  <section class="hero"><div id="heroBg" class="hero-bg"></div><div class="hero-copy"><div class="eyebrow">✦ YOUR MOVIE UNIVERSE</div><h1 id="heroTitle">Discover your next favorite</h1><p id="heroText">Trending films, great stories, ratings and trailers — all in one place.</p><div class="row"><button id="heroInfo" class="btn red">▶ More Info</button><button id="randomBtn" class="btn">🎲 Surprise Me</button></div></div></section>
+  <section class="section"><div class="section-head"><h2 id="pageTitle">🔥 Trending Movies</h2><button id="refreshBtn" class="btn">↻ Refresh</button></div><div class="toolbar"><select id="genreSelect"><option value="">All genres</option><option value="28">Action</option><option value="35">Comedy</option><option value="27">Horror</option><option value="10749">Romance</option><option value="878">Sci-Fi</option><option value="53">Thriller</option><option value="16">Animation</option><option value="18">Drama</option><option value="12">Adventure</option></select><select id="sortSelect"><option value="popularity.desc">Most popular</option><option value="vote_average.desc">Top rated</option><option value="release_date.desc">Newest first</option></select><button id="applyFilters" class="btn">Apply</button></div><div id="status" class="status">Loading movies…</div><div id="movieGrid" class="grid"></div><button id="loadMore" class="btn hidden" style="margin-top:18px">Load more</button></section>
+  <section id="similarSection" class="section hidden"><div class="section-head"><h2>🎯 Similar Movies</h2></div><div id="similarGrid" class="grid"></div></section>
+</main></div>
+<footer>CineMax · Movie information and posters powered by TMDB · This site does not host full movie files.<br><button class="btn" id="topBtn" style="margin-top:10px">Back to top ↑</button></footer>
+<div id="modal" class="modal" role="dialog" aria-modal="true" aria-label="Movie details"><div class="modalbox"><div class="modalbar"><button id="closeModal" class="btn">✕ Close</button></div><div id="modalContent" class="details"></div></div></div>
 <script>
-const API_KEY = "4675af0e47c901dc4e5d2c56818b4f6d";
-const API = "https://api.themoviedb.org/3";
-const IMG = "https://image.tmdb.org/t/p/w500";
-const moviesEl = document.getElementById("movies");
-const statusEl = document.getElementById("status");
-const headingEl = document.getElementById("heading");
-
-async function getData(path) {
-  const response = await fetch(API + path + (path.includes("?") ? "&" : "?") +
-    "api_key=" + API_KEY);
-  if (!response.ok) throw new Error("API error " + response.status);
-  return response.json();
+"use strict";
+const API_KEY="4675af0e47c901dc4e5d2c56818b4f6d";
+const BASE="https://api.themoviedb.org/3", IMG="https://image.tmdb.org/t/p/w500", BACK="https://image.tmdb.org/t/p/w1280";
+const $=id=>document.getElementById(id);
+let currentPage="trending", currentPageNumber=1, currentItems=[], searchTerm="", heroMovie=null, requestNo=0;
+function readList(k){try{let x=JSON.parse(localStorage.getItem(k)||"[]");return Array.isArray(x)?x:[]}catch(e){return[]}}
+let favorites=readList("cinemax_favorites"), watchlist=readList("cinemax_watchlist");
+function saveLists(){try{localStorage.setItem("cinemax_favorites",JSON.stringify(favorites));localStorage.setItem("cinemax_watchlist",JSON.stringify(watchlist))}catch(e){}}
+async function api(path){
+ const url=BASE+path+(path.includes("?")?"&":"?")+"api_key="+encodeURIComponent(API_KEY);
+ const res=await fetch(url);
+ if(!res.ok){let msg="Request failed ("+res.status+")";try{let j=await res.json();if(j.status_message)msg=j.status_message+" ("+res.status+")"}catch(e){}throw Error(msg)}
+ return res.json()
 }
-
-function showMovies(list) {
-  moviesEl.innerHTML = "";
-  const items = (list || []).filter(m => m.poster_path);
-  if (!items.length) {
-    statusEl.textContent = "No movies found. Try again.";
-    return;
-  }
-  statusEl.textContent = items.length + " movies found";
-  items.forEach(m => {
-    const card = document.createElement("article");
-    card.className = "card";
-    const img = document.createElement("img");
-    img.src = IMG + m.poster_path;
-    img.alt = m.title || m.name || "Movie poster";
-    img.loading = "lazy";
-    const info = document.createElement("div");
-    info.className = "info";
-    const title = document.createElement("h3");
-    title.textContent = m.title || m.name || "Untitled";
-    const meta = document.createElement("p");
-    meta.textContent = "⭐ " + (m.vote_average ? m.vote_average.toFixed(1) : "N/A") +
-      " · " + ((m.release_date || m.first_air_date || "").slice(0,4) || "Year N/A");
-    info.append(title, meta);
-    card.append(img, info);
-    card.onclick = () => showDetails(m);
-    moviesEl.appendChild(card);
-  });
+function titleOf(m){return m.title||m.name||"Untitled"}
+function yearOf(m){return (m.release_date||m.first_air_date||"").slice(0,4)||"Year unknown"}
+function saved(list,id){return list.some(x=>Number(x.id)===Number(id))}
+function cardFor(m){
+ const card=document.createElement("article");card.className="card";
+ const heart=document.createElement("button");heart.className="heart"+(saved(favorites,m.id)?" saved":"");heart.textContent=saved(favorites,m.id)?"♥":"♡";heart.title="Add/remove favorite";heart.setAttribute("aria-label","Favorite");
+ heart.onclick=e=>{e.stopPropagation();toggleFav(m)};
+ const img=document.createElement("img");img.className="poster";img.loading="lazy";img.alt=titleOf(m);img.src=m.poster_path?IMG+m.poster_path:"https://placehold.co/300x450/151f29/ffffff?text=No+Poster";
+ const info=document.createElement("div");info.className="cardinfo";const h=document.createElement("h3");h.textContent=titleOf(m);const r=document.createElement("p");r.className="rating";r.textContent="★ "+(Number(m.vote_average)?Number(m.vote_average).toFixed(1):"N/A");const y=document.createElement("p");y.textContent=yearOf(m);info.append(h,r,y);card.append(heart,img,info);card.onclick=()=>openDetails(m);return card
 }
-
-async function loadMovies(type) {
-  const configs = {
-    trending: ["/trending/movie/week", "🔥 Trending Movies"],
-    latest: ["/movie/now_playing", "🎬 Now Playing"],
-    bollywood: ["/discover/movie?with_original_language=hi&sort_by=popularity.desc", "🇮🇳 Bollywood"],
-    hollywood: ["/discover/movie?with_original_language=en&sort_by=popularity.desc", "🇺🇸 Hollywood"],
-    south: ["/discover/movie?with_original_language=ta&sort_by=popularity.desc", "🎥 Tamil Movies"]
-  };
-  const config = configs[type] || configs.trending;
-  headingEl.textContent = config[1];
-  moviesEl.innerHTML = "";
-  statusEl.textContent = "Loading movies...";
-  try {
-    const data = await getData(config[0]);
-    showMovies(data.results);
-  } catch (err) {
-    statusEl.textContent = "Movies load nahi hui. Internet/API Key check karo. Error: " + err.message;
-  }
+function render(list){const grid=$("movieGrid");grid.replaceChildren();if(!list||!list.length){$("status").textContent="No results found. Try another category or search.";return}list.forEach(m=>grid.appendChild(cardFor(m)));$("status").textContent=list.length+" titles loaded"}
+function setHeading(t){$("pageTitle").textContent=t}
+function updateHero(m){if(!m)return;heroMovie=m;$("heroTitle").textContent=titleOf(m);$("heroText").textContent=m.overview||"Discover details, ratings and available trailers.";const img=m.backdrop_path?BACK+m.backdrop_path:(m.poster_path?IMG+m.poster_path:"");$("heroBg").style.backgroundImage=img?"url('"+img+"')":"none"}
+const configs={
+ home:["/trending/movie/week","⌂ Popular This Week"],trending:["/trending/movie/week","🔥 Trending Movies"],
+ latest:["/movie/now_playing","◷ Latest Movies"],popular:["/movie/popular","🎬 Popular Movies"],
+ series:["/tv/popular","▣ Popular Series"],bollywood:["/discover/movie?with_original_language=hi&sort_by=popularity.desc","★ Bollywood Movies"],
+ hollywood:["/discover/movie?with_original_language=en&sort_by=popularity.desc","★ Hollywood Movies"],
+ south:["/discover/movie?with_original_language=ta&sort_by=popularity.desc","▷ South Indian Movies"],
+ animation:["/discover/movie?with_genres=16&sort_by=popularity.desc","✧ Animation Movies"],
+ action:["/discover/movie?with_genres=28&sort_by=popularity.desc","Action Movies"],
+ comedy:["/discover/movie?with_genres=35&sort_by=popularity.desc","Comedy Movies"],
+ horror:["/discover/movie?with_genres=27&sort_by=popularity.desc","Horror Movies"],
+ romance:["/discover/movie?with_genres=10749&sort_by=popularity.desc","Romance Movies"],
+ scifi:["/discover/movie?with_genres=878&sort_by=popularity.desc","Sci-Fi Movies"],
+ thriller:["/discover/movie?with_genres=53&sort_by=popularity.desc","Thriller Movies"]
+};
+async function loadPage(page,append=false){
+ currentPage=page;searchTerm="";if(!append)currentPageNumber=1;
+ $("searchInput").value="";$("status").textContent="Loading movies…";if(!append)$("movieGrid").replaceChildren();$("loadMore").classList.add("hidden");
+ document.querySelectorAll("#sidebar button[data-page]").forEach(b=>b.classList.toggle("active",b.dataset.page===page));
+ if(page==="mylist"){setHeading("♡ My Watchlist");currentItems=watchlist.slice();render(currentItems);return}
+ const c=configs[page]||configs.trending;setHeading(c[1]);const thisReq=++requestNo;
+ try{let path=c[0];if(path.includes("?"))path+="&page="+currentPageNumber;else path+="?page="+currentPageNumber;const data=await api(path);if(thisReq!==requestNo)return;const list=data.results||[];currentItems=append?currentItems.concat(list):list;if(!append&&list[0])updateHero(list[0]);render(currentItems);$("loadMore").classList.toggle("hidden",!data.total_pages||currentPageNumber>=data.total_pages)}catch(e){if(e.name==="AbortError")return;$("status").textContent="Movies load nahi hui: "+e.message+". Internet aur API Key check karein."}
 }
-
-async function runSearch() {
-  const q = document.getElementById("query").value.trim();
-  if (!q) {
-    statusEl.textContent = "Pehle movie ka naam likho.";
-    return;
-  }
-  headingEl.textContent = "🔎 Search: " + q;
-  moviesEl.innerHTML = "";
-  statusEl.textContent = "Searching movies...";
-  try {
-    const data = await getData("/search/movie?query=" + encodeURIComponent(q));
-    showMovies(data.results);
-  } catch (err) {
-    statusEl.textContent = "Search failed. Error: " + err.message;
-  }
+async function searchMovies(){
+ const q=$("searchInput").value.trim();if(!q){$("status").textContent="Pehle movie ya actor ka naam likho.";return}
+ searchTerm=q;currentPage="search";currentPageNumber=1;const thisReq=++requestNo;setHeading('🔎 Results for "'+q+'"');$("movieGrid").replaceChildren();$("status").textContent="Searching…";$("loadMore").classList.add("hidden");
+ try{const d=await api("/search/multi?query="+encodeURIComponent(q)+"&page=1");if(thisReq!==requestNo)return;currentItems=(d.results||[]).filter(x=>x.media_type!=="person");render(currentItems)}catch(e){$("status").textContent="Search failed: "+e.message}
 }
-
-async function showDetails(movie) {
-  const modal = document.getElementById("modal");
-  const details = document.getElementById("details");
-  modal.style.display = "block";
-  details.innerHTML = "<p>Loading details...</p>";
-  try {
-    const data = await getData("/movie/" + movie.id);
-    details.innerHTML = "";
-    if (data.poster_path) {
-      const img = document.createElement("img");
-      img.src = IMG + data.poster_path;
-      img.alt = data.title || "Movie poster";
-      details.appendChild(img);
-    }
-    const title = document.createElement("h2");
-    title.textContent = data.title || "Movie details";
-    const rating = document.createElement("p");
-    rating.textContent = "⭐ Rating: " + (data.vote_average ? data.vote_average.toFixed(1) : "N/A");
-    const date = document.createElement("p");
-    date.textContent = "Release date: " + (data.release_date || "Unknown");
-    const overview = document.createElement("p");
-    overview.textContent = data.overview || "No description available.";
-    const trailer = document.createElement("p");
-    trailer.innerHTML = '<a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=' +
-      encodeURIComponent((data.title || "") + " official trailer") + '">Watch trailer on YouTube</a>';
-    details.append(title, rating, date, overview, trailer);
-  } catch (err) {
-    details.textContent = "Details load nahi hue: " + err.message;
-  }
+function toggleFav(m){if(saved(favorites,m.id))favorites=favorites.filter(x=>Number(x.id)!==Number(m.id));else favorites.push(m);saveLists();if(currentPage==="mylist")loadPage("mylist");else render(currentItems)}
+function toggleWatch(m){if(saved(watchlist,m.id))watchlist=watchlist.filter(x=>Number(x.id)!==Number(m.id));else watchlist.push({id:m.id,title:titleOf(m),name:m.name,poster_path:m.poster_path,vote_average:m.vote_average,release_date:m.release_date,first_air_date:m.first_air_date,media_type:m.media_type});saveLists();if(currentPage==="mylist")loadPage("mylist");}
+async function openDetails(m){
+ $("modal").classList.add("open");$("modalContent").innerHTML="<p>Loading movie details…</p>";document.body.style.overflow="hidden";
+ try{
+  const type=m.media_type==="tv"||m.first_air_date&&!m.release_date?"tv":"movie";
+  const d=await api("/"+type+"/"+m.id+"?append_to_response=videos,credits,similar");
+  const wrap=document.createElement("div");wrap.className="detailgrid";
+  const poster=document.createElement("img");poster.className="detailposter";poster.alt=titleOf(d);poster.src=d.poster_path?IMG+d.poster_path:"https://placehold.co/300x450/151f29/ffffff?text=No+Poster";wrap.appendChild(poster);
+  const body=document.createElement("div");body.className="detailbody";
+  const h=document.createElement("h2");h.textContent=titleOf(d);
+  const meta=document.createElement("p");meta.textContent="★ "+(d.vote_average?d.vote_average.toFixed(1):"N/A")+" / 10  ·  "+yearOf(d)+"  ·  "+(d.runtime?d.runtime+" min":"");
+  const overview=document.createElement("p");overview.textContent=d.overview||"Description not available.";
+  const genres=document.createElement("p");genres.textContent="Genres: "+((d.genres||[]).map(g=>g.name).join(", ")||"Not available");
+  const actions=document.createElement("div");actions.className="row";
+  const fav=document.createElement("button");fav.className="btn";fav.textContent=saved(favorites,d.id)?"♥ Remove Favorite":"♡ Add Favorite";fav.onclick=()=>{toggleFav(d);fav.textContent=saved(favorites,d.id)?"♥ Remove Favorite":"♡ Add Favorite"};
+  const wl=document.createElement("button");wl.className="btn";wl.textContent=saved(watchlist,d.id)?"✓ In My List":"＋ My List";wl.onclick=()=>{toggleWatch(d);wl.textContent=saved(watchlist,d.id)?"✓ In My List":"＋ My List"};
+  actions.append(fav,wl);body.append(h,meta,genres,overview,actions);wrap.appendChild(body);$("modalContent").replaceChildren(wrap);
+  const videos=(d.videos&&d.videos.results)||[];const trailer=videos.find(v=>v.site==="YouTube"&&v.type==="Trailer"&&v.key)||videos.find(v=>v.site==="YouTube"&&v.key);
+  if(trailer){const label=document.createElement("h3");label.textContent="▶ Trailer";const video=document.createElement("div");video.className="video";const iframe=document.createElement("iframe");iframe.src="https://www.youtube-nocookie.com/embed/"+encodeURIComponent(trailer.key);iframe.title=titleOf(d)+" trailer";iframe.allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share";iframe.allowFullscreen=true;video.appendChild(iframe);$("modalContent").append(label,video)}
+  else{const p=document.createElement("p");p.textContent="Is title ka embeddable trailer TMDB par nahi mila."; $("modalContent").appendChild(p)}
+  const similar=(d.similar&&d.similar.results)||[];if(similar.length){$("similarSection").classList.remove("hidden");$("similarGrid").replaceChildren(...similar.slice(0,8).map(cardFor))}
+ }catch(e){$("modalContent").textContent="Details load nahi hue: "+e.message}
 }
-
-function closeDetails() {
-  document.getElementById("modal").style.display = "none";
-}
-
-loadMovies("trending");
+function closeModal(){$("modal").classList.remove("open");$("modalContent").replaceChildren();document.body.style.overflow="";const frame=$("modalContent").querySelector("iframe");if(frame)frame.src="about:blank"}
+$("searchForm").addEventListener("submit",e=>{e.preventDefault();searchMovies()});
+$("sidebar").addEventListener("click",e=>{const b=e.target.closest("button[data-page]");if(b)loadPage(b.dataset.page)});
+$("closeModal").addEventListener("click",closeModal);
+$("modal").addEventListener("click",e=>{if(e.target===$("modal"))closeModal()});
+document.addEventListener("keydown",e=>{if(e.key==="Escape")closeModal()});
+$("refreshBtn").addEventListener("click",()=>currentPage==="search"?searchMovies():loadPage(currentPage));
+$("loadMore").addEventListener("click",()=>{currentPageNumber++;if(currentPage==="search")searchMovies();else loadPage(currentPage,true)});
+$("applyFilters").addEventListener("click",async()=>{
+ const genre=$("genreSelect").value,sort=$("sortSelect").value;
+ if(!genre){loadPage(currentPage);return}
+ const req=++requestNo;$("status").textContent="Applying filters…";$("movieGrid").replaceChildren();
+ try{const d=await api("/discover/movie?with_genres="+genre+"&sort_by="+sort+"&page=1");if(req!==requestNo)return;currentPage="filter";currentItems=d.results||[];setHeading("Filtered Movies");render(currentItems)}catch(e){$("status").textContent="Filter failed: "+e.message}
+});
+$("randomBtn").addEventListener("click",()=>{if(currentItems.length)openDetails(currentItems[Math.floor(Math.random()*currentItems.length)]);else loadPage("trending")});
+$("heroInfo").addEventListener("click",()=>{if(heroMovie)openDetails(heroMovie);else loadPage("trending")});
+$("themeBtn").addEventListener("click",()=>{document.body.classList.toggle("light");$("themeBtn").textContent=document.body.classList.contains("light")?"☾":"☼"});
+$("topBtn").addEventListener("click",()=>window.scrollTo({top:0,behavior:"smooth"}));
+loadPage("trending");
 </script>
 </body>
 </html>
