@@ -2,605 +2,193 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>CineMax — Premium Movie World</title>
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Free Movies | CineVerse</title>
 <style>
-:root {
-  --bg:#070910;
-  --panel:#111521;
-  --card:#121624;
-  --red:#ff1744;
-  --text:#ffffff;
-  --muted:#a9afc1;
-}
-* { box-sizing:border-box; }
-
-html { scroll-behavior:smooth; }
-
-body {
-  margin:0;
-  background:var(--bg);
-  color:var(--text);
-  font-family:Arial,Helvetica,sans-serif;
-  overflow-x:hidden;
-}
-
-body.light {
-  --bg:#f1f3f8;
-  --panel:#ffffff;
-  --card:#ffffff;
-  --text:#141725;
-  --muted:#5d6474;
-}
-
-button,input { font:inherit; }
-button { cursor:pointer; }
-
-#intro {
-  position:fixed;
-  inset:0;
-  z-index:1000;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  flex-direction:column;
-  background:#05060b;
-  animation:introOut .8s ease 2.1s forwards;
-}
-
-.intro-logo {
-  font-size:clamp(38px,9vw,72px);
-  font-weight:900;
-  letter-spacing:4px;
-  color:white;
-  animation:logoIn 1s ease both;
-}
-
-.intro-logo span { color:var(--red); }
-
-.intro-line {
-  height:4px;
-  width:0;
-  margin-top:18px;
-  background:var(--red);
-  box-shadow:0 0 20px var(--red);
-  animation:lineIn 1.2s ease .4s forwards;
-}
-
-.intro-caption {
-  margin-top:18px;
-  color:#aab0c3;
-  letter-spacing:4px;
-  font-size:12px;
-  animation:fadeIn 1s ease .5s both;
-}
-
-@keyframes logoIn {
-  from { opacity:0; transform:scale(.6); filter:blur(12px); }
-  to { opacity:1; transform:scale(1); filter:blur(0); }
-}
-@keyframes lineIn { to { width:min(300px,70vw); } }
-@keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
-@keyframes introOut {
-  to { opacity:0; visibility:hidden; pointer-events:none; }
-}
-
-header {
-  position:sticky;
-  top:0;
-  z-index:50;
-  background:var(--panel);
-  border-bottom:1px solid #272b3c;
-  padding:13px 5%;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:14px;
-  flex-wrap:wrap;
-}
-
-.logo {
-  font-size:25px;
-  font-weight:900;
-  white-space:nowrap;
-}
-.logo span { color:var(--red); }
-
-.header-actions {
-  display:flex;
-  gap:8px;
-  align-items:center;
-}
-
-.search-wrap {
-  display:flex;
-  gap:6px;
-  align-items:center;
-}
-
-input {
-  width:min(260px,45vw);
-  padding:12px;
-  border:1px solid #363b50;
-  border-radius:9px;
-  outline:none;
-  background:var(--bg);
-  color:var(--text);
-}
-
-input:focus { border-color:var(--red); }
-
-.btn {
-  border:0;
-  padding:11px 14px;
-  border-radius:9px;
-  color:white;
-  background:var(--red);
-  font-weight:bold;
-  transition:transform .2s,filter .2s;
-}
-
-.btn:hover { transform:translateY(-2px); filter:brightness(1.12); }
-
-.btn.secondary {
-  background:#252a3b;
-  color:white;
-}
-
-.icon-btn {
-  width:39px;
-  height:39px;
-  border:1px solid #34394b;
-  background:var(--bg);
-  color:var(--text);
-  border-radius:50%;
-}
-
-nav {
-  display:flex;
-  gap:9px;
-  padding:14px 5%;
-  overflow-x:auto;
-  background:var(--panel);
-}
-
-nav button {
-  flex-shrink:0;
-  padding:10px 15px;
-  border:1px solid #2b3042;
-  border-radius:22px;
-  background:var(--bg);
-  color:var(--text);
-}
-
-nav button.active,
-nav button:hover {
-  background:var(--red);
-  border-color:var(--red);
-  color:white;
-}
-
-.hero {
-  min-height:350px;
-  padding:55px 6%;
-  display:flex;
-  align-items:center;
-  position:relative;
-  overflow:hidden;
-  background:
-    radial-gradient(ellipse at 80% 40%,#6c142c 0%,transparent 50%),
-    linear-gradient(110deg,#090b13 20%,#101a35 70%,#330b20);
-}
-
-.hero::after {
-  content:"CINEMAX";
-  position:absolute;
-  right:-20px;
-  bottom:-25px;
-  font-size:clamp(75px,15vw,180px);
-  font-weight:900;
-  color:#ffffff08;
-  pointer-events:none;
-}
-
-.hero-content {
-  max-width:650px;
-  position:relative;
-  z-index:1;
-  animation:heroIn 1s ease both;
-}
-
-@keyframes heroIn {
-  from { opacity:0; transform:translateY(30px); }
-  to { opacity:1; transform:translateY(0); }
-}
-
-.badge {
-  display:inline-block;
-  padding:7px 12px;
-  border-radius:6px;
-  background:#401020;
-  color:#ff8ba1;
-  font-size:12px;
-  font-weight:bold;
-}
-
-.hero h1 {
-  font-size:clamp(34px,7vw,65px);
-  line-height:1.05;
-  margin:18px 0 12px;
-}
-
-.hero p {
-  color:#c3c7d4;
-  line-height:1.7;
-}
-
-.hero-buttons {
-  display:flex;
-  gap:10px;
-  flex-wrap:wrap;
-  margin-top:20px;
-}
-
-main { padding:10px 5% 40px; }
-
-.section { margin:30px 0; }
-
-.section-head {
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:10px;
-  margin-bottom:16px;
-}
-
-.section h2 {
-  font-size:22px;
-  margin:0;
-}
-
-.view-all {
-  border:0;
-  background:none;
-  color:var(--red);
-  font-weight:bold;
-}
-
-.grid {
-  display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(145px,1fr));
-  gap:16px;
-}
-
-.card {
-  min-width:0;
-  overflow:hidden;
-  border-radius:12px;
-  background:var(--card);
-  border:1px solid #252a3b;
-  opacity:0;
-  animation:cardIn .55s ease forwards;
-  transition:transform .25s,border-color .25s;
-}
-
-.card:hover {
-  transform:translateY(-6px);
-  border-color:var(--red);
-}
-
-@keyframes cardIn {
-  from { opacity:0; transform:translateY(18px); }
-  to { opacity:1; transform:translateY(0); }
-}
-
-.poster {
-  width:100%;
-  aspect-ratio:2/3;
-  object-fit:cover;
-  display:block;
-  background:#171b29;
-}
-
-.card-info { padding:11px; }
-
-.card h3 {
-  font-size:14px;
-  line-height:1.4;
-  margin:0 0 8px;
-}
-
-.meta {
-  font-size:12px;
-  color:var(--muted);
-  margin-bottom:11px;
-}
-
-.star { color:#ffc342; }
-
-.card-actions {
-  display:flex;
-  gap:5px;
-}
-
-.card-actions button {
-  padding:9px 5px;
-  font-size:12px;
-}
-
-.details-btn { flex:1; }
-
-.small-btn {
-  width:35px;
-  background:#252a3b;
-  color:white;
-  border:0;
-  border-radius:7px;
-}
-
-.categories {
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(125px,1fr));
-  gap:12px;
-}
-
-.genre {
-  padding:22px 12px;
-  text-align:center;
-  border:1px solid #2b3043;
-  border-radius:12px;
-  background:linear-gradient(135deg,#191e30,#10121c);
-  color:white;
-  font-weight:bold;
-  transition:.25s;
-}
-
-.genre:hover {
-  transform:translateY(-4px);
-  border-color:var(--red);
-}
-
-.genre span {
-  display:block;
-  font-size:27px;
-  margin-bottom:9px;
-}
-
-.message {
-  color:var(--muted);
-  padding:18px 0;
-  line-height:1.6;
-}
-
-.hidden { display:none!important; }
-
-.benefits {
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
-  gap:12px;
-}
-
-.benefit {
-  background:var(--panel);
-  border:1px solid #282d40;
-  border-radius:12px;
-  padding:20px;
-}
-
-.benefit strong {
-  display:block;
-  margin-bottom:8px;
-}
-
-.benefit p {
-  margin:0;
-  font-size:13px;
-  color:var(--muted);
-  line-height:1.5;
-}
-
-footer {
-  padding:25px 5%;
-  background:var(--panel);
-  color:var(--muted);
-  text-align:center;
-  line-height:1.8;
-}
-
-.modal {
-  display:none;
-  position:fixed;
-  inset:0;
-  z-index:200;
-  overflow:auto;
-  padding:15px;
-  background:#000d;
-}
-
-.modal-box {
-  max-width:750px;
-  margin:20px auto;
-  background:#111521;
-  color:white;
-  border:1px solid #30364b;
-  border-radius:15px;
-  padding:20px;
-}
-
-.modal-close {
-  display:block;
-  margin-left:auto;
-  background:#292e40;
-  color:white;
-  border:0;
-  border-radius:7px;
-  padding:10px;
-}
-
-.detail-top {
-  display:flex;
-  gap:20px;
-  margin:20px 0;
-}
-
-.detail-poster {
-  width:150px;
-  height:max-content;
-  border-radius:10px;
-}
-
-.detail-text { flex:1; }
-
-.detail-text p,.story {
-  color:#c1c7d6;
-  line-height:1.7;
-}
-
-iframe {
-  width:100%;
-  aspect-ratio:16/9;
-  border:0;
-  border-radius:10px;
-  margin-top:10px;
-  background:#000;
-}
-
-#toast {
-  position:fixed;
-  bottom:20px;
-  left:50%;
-  transform:translateX(-50%);
-  background:var(--red);
-  color:white;
-  padding:12px 18px;
-  border-radius:9px;
-  z-index:500;
-  display:none;
-  max-width:90%;
-  text-align:center;
-}
-
-@media(max-width:600px) {
-  header { padding:12px 4%; }
-  .logo { font-size:21px; }
-  .search-wrap { width:100%; }
-  .search-wrap input { width:100%; min-width:0; }
-  .header-actions { width:100%; }
-  .hero { min-height:320px; padding:35px 5%; }
-  .grid { grid-template-columns:repeat(2,minmax(0,1fr)); gap:11px; }
-  main { padding-left:4%; padding-right:4%; }
-  .card-info { padding:8px; }
-  .detail-top { gap:12px; }
-  .detail-poster { width:110px; }
-  .modal-box { padding:13px; }
-}
+*{box-sizing:border-box}
+body{margin:0;background:#0b0b0f;color:#fff;font-family:Arial,sans-serif}
+header{padding:20px 5%;background:#111116;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
+.logo{font-size:25px;font-weight:bold;color:#e50914}
+nav{display:flex;gap:8px;flex-wrap:wrap}
+button{cursor:pointer;border:0;border-radius:7px;padding:10px 14px;background:#292932;color:#fff}
+button:hover{background:#e50914}
+.hero{padding:55px 5%;background:linear-gradient(90deg,#16131d,#291018);min-height:190px}
+.hero h1{font-size:36px;margin:0 0 12px}
+.search{display:flex;gap:8px;max-width:600px;margin-top:20px}
+input{min-width:0;flex:1;padding:13px;border:1px solid #444;border-radius:7px;background:#1c1c24;color:#fff;font-size:16px}
+main{padding:20px 5%}
+.section-title{margin-top:28px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(145px,1fr));gap:17px}
+.card{background:#17171e;border-radius:10px;overflow:hidden;cursor:pointer;transition:.2s}
+.card:hover{transform:translateY(-4px)}
+.card img{width:100%;aspect-ratio:2/3;object-fit:cover;display:block;background:#222}
+.info{padding:10px}
+.info h3{font-size:14px;margin:0 0 8px;line-height:1.35}
+.info p{margin:0;color:#bbb;font-size:12px}
+.status{color:#bbb;padding:15px 0}
+footer{text-align:center;color:#999;padding:30px}
+.modal{display:none;position:fixed;inset:0;background:#000d;z-index:5;padding:20px;overflow:auto}
+.modal-box{max-width:700px;margin:30px auto;background:#191920;padding:20px;border-radius:12px}
+.modal-box img{width:140px;max-width:40%;float:left;margin:0 18px 12px 0;border-radius:8px}
+.close{float:right;background:#e50914}
+a{color:#ff747b}
+@media(max-width:500px){.hero h1{font-size:27px}.grid{grid-template-columns:repeat(2,minmax(0,1fr))}header{align-items:flex-start}}
 </style>
 </head>
-
 <body>
-
-<div id="intro">
-  <div class="intro-logo">CINE<span>MAX</span></div>
-  <div class="intro-line"></div>
-  <div class="intro-caption">YOUR MOVIE UNIVERSE</div>
-</div>
-
 <header>
-  <div class="logo">🎬 Cine<span>Max</span></div>
-
-  <div class="header-actions">
-    <div class="search-wrap">
-      <input id="searchInput" placeholder="Search movies..." aria-label="Movie name">
-      <button class="btn" id="searchBtn">Search</button>
-    </div>
-    <button class="icon-btn" id="themeBtn" title="Change theme">☀️</button>
-  </div>
+  <div class="logo">CINEVERSE</div>
+  <nav>
+    <button onclick="loadMovies('trending')">Trending</button>
+    <button onclick="loadMovies('latest')">Latest</button>
+    <button onclick="loadMovies('bollywood')">Bollywood</button>
+    <button onclick="loadMovies('hollywood')">Hollywood</button>
+    <button onclick="loadMovies('south')">South Indian</button>
+  </nav>
 </header>
 
-<nav id="nav">
-  <button class="active" data-action="home">🏠 Home</button>
-  <button data-action="trending">🔥 Trending</button>
-  <button data-action="latest">🆕 Latest</button>
-  <button data-action="favorites">❤️ Favorites</button>
-  <button data-action="watchlist">📌 Watchlist</button>
-</nav>
-
 <section class="hero">
-  <div class="hero-content">
-    <span class="badge">YOUR NEXT FAVOURITE MOVIE</span>
-    <h1>Enter The World<br>Of Cinema.</h1>
-    <p>Discover trending movies, explore new releases, check ratings and watch official trailers.</p>
-    <div class="hero-buttons">
-      <button class="btn" onclick="randomMovie()">🎲 Surprise Me</button>
-      <button class="btn secondary" onclick="goToTrending()">🔥 Explore Movies</button>
-    </div>
+  <h1>Discover Your Next Movie</h1>
+  <p>Explore movies, ratings, stories and trailers.</p>
+  <div class="search">
+    <input id="query" placeholder="Search a movie..." onkeydown="if(event.key==='Enter')runSearch()">
+    <button onclick="runSearch()">Search</button>
   </div>
 </section>
 
 <main>
-  <section id="searchSection" class="section hidden">
-    <div class="section-head">
-      <h2>🔍 Search Results</h2>
-      <button class="view-all" onclick="goHome()">← Home</button>
-    </div>
-    <div id="searchResults" class="grid"></div>
-  </section>
-
-  <section id="categorySection" class="section hidden">
-    <div class="section-head">
-      <h2 id="categoryTitle">Movies</h2>
-      <button class="view-all" onclick="goHome()">← Home</button>
-    </div>
-    <div id="categoryGrid" class="grid"></div>
-  </section>
-
-  <section id="trendingSection" class="section">
-    <div class="section-head">
-      <h2>🔥 Trending This Week</h2>
-      <button class="view-all" onclick="openCategory('all')">Explore →</button>
-    </div>
-    <div id="trendingGrid" class="grid">
-      <p class="message">Loading trending movies...</p>
-    </div>
-  </section>
-
-  <section id="genreSection" class="section">
-    <div class="section-head"><h2>🎭 Popular Categories</h2></div>
-    <div class="categories">
-      <button class="genre" onclick="openCategory('bollywood')"><span>🇮🇳</span>Bollywood</button>
-      <button class="genre" onclick="openCategory('hollywood')"><span>🇺🇸</span>Hollywood</button>
-      <button class="genre" onclick="openCategory('south')"><span>🎥</span>South Indian</button>
-      <button class="genre" onclick="openCategory('28')"><span>💥</span>Action</button>
-      <button class="genre" onclick="openCategory('35')"><span>😂</span>Comedy</button>
-      <button class="genre" onclick="openCategory('27')"><span>👻</span>Horror</button>
-      <button class="genre" onclick="openCategory('10749')"><span>❤️</span>Romance</button>
-      <button class="genre" onclick="openCategory('878')"><span>🚀</span>Sci-Fi</button>
-      <button class="genre" onclick="openCategory('16')"><span>🎨</span>Animation</button>
-      <button class="genre" onclick="openCategory('53')"><span>🕵️</span>Thriller</button>
-    </div>
-  </section>
-
-  <section id="latestSection" class="section">
-    <div class="section-head">
-      <h2>🆕 Latest Movies</h2>
-      <button class="view-all" onclick="openCategory('latest')">Explore →</button>
-    </div>
-    <div id="latestGrid" class="grid">
-      <p class="message">Loading latest movies...</p>
-    </div>
-  </section>
-
-  <section class="section">
-    <div class="section-head"><h2>✨ Why CineMax?</h2></div>
-    <div class="benefits">
-      <div class="benefit"><strong>⚡ Easy Discovery</strong><p>Find movies by title, category and popularity.</p></div>
-      <div class="benefit"><strong>❤️ Your Personal List</strong><p>Save favourites and keep a watchlist on this device.</p></div>
-      <div class="benefit"><strong>⭐ Movie Details</strong><p>Explore ratings, release dates, genres and stories.</p></div>
-      <div class="benefit"><strong>📱 Watch Anywhere</strong><p>A responsive design for phones, tablets and desktops.</p></div>
-    </div>
-  </section>
+  <h2 class="section-title" id="heading">🔥 Trending Movies</h2>
+  <div id="status" class="status">Loading movies...</div>
+  <div id="movies" class="grid"></div>
 </main>
 
-<footer>
-  <div class="logo
+<div id="modal" class="modal" onclick="if(event.target===this)closeDetails()">
+  <div class="modal-box">
+    <button class="close" onclick="closeDetails()">Close ✕</button>
+    <div id="details"></div>
+    <div style="clear:both"></div>
+  </div>
+</div>
+
+<footer>Movie information powered by TMDB. This site does not host movie files.</footer>
+
+<script>
+const API_KEY = "4675af0e47c901dc4e5d2c56818b4f6d";
+const API = "https://api.themoviedb.org/3";
+const IMG = "https://image.tmdb.org/t/p/w500";
+const moviesEl = document.getElementById("movies");
+const statusEl = document.getElementById("status");
+const headingEl = document.getElementById("heading");
+
+async function getData(path) {
+  const response = await fetch(API + path + (path.includes("?") ? "&" : "?") +
+    "api_key=" + API_KEY);
+  if (!response.ok) throw new Error("API error " + response.status);
+  return response.json();
+}
+
+function showMovies(list) {
+  moviesEl.innerHTML = "";
+  const items = (list || []).filter(m => m.poster_path);
+  if (!items.length) {
+    statusEl.textContent = "No movies found. Try again.";
+    return;
+  }
+  statusEl.textContent = items.length + " movies found";
+  items.forEach(m => {
+    const card = document.createElement("article");
+    card.className = "card";
+    const img = document.createElement("img");
+    img.src = IMG + m.poster_path;
+    img.alt = m.title || m.name || "Movie poster";
+    img.loading = "lazy";
+    const info = document.createElement("div");
+    info.className = "info";
+    const title = document.createElement("h3");
+    title.textContent = m.title || m.name || "Untitled";
+    const meta = document.createElement("p");
+    meta.textContent = "⭐ " + (m.vote_average ? m.vote_average.toFixed(1) : "N/A") +
+      " · " + ((m.release_date || m.first_air_date || "").slice(0,4) || "Year N/A");
+    info.append(title, meta);
+    card.append(img, info);
+    card.onclick = () => showDetails(m);
+    moviesEl.appendChild(card);
+  });
+}
+
+async function loadMovies(type) {
+  const configs = {
+    trending: ["/trending/movie/week", "🔥 Trending Movies"],
+    latest: ["/movie/now_playing", "🎬 Now Playing"],
+    bollywood: ["/discover/movie?with_original_language=hi&sort_by=popularity.desc", "🇮🇳 Bollywood"],
+    hollywood: ["/discover/movie?with_original_language=en&sort_by=popularity.desc", "🇺🇸 Hollywood"],
+    south: ["/discover/movie?with_original_language=ta&sort_by=popularity.desc", "🎥 Tamil Movies"]
+  };
+  const config = configs[type] || configs.trending;
+  headingEl.textContent = config[1];
+  moviesEl.innerHTML = "";
+  statusEl.textContent = "Loading movies...";
+  try {
+    const data = await getData(config[0]);
+    showMovies(data.results);
+  } catch (err) {
+    statusEl.textContent = "Movies load nahi hui. Internet/API Key check karo. Error: " + err.message;
+  }
+}
+
+async function runSearch() {
+  const q = document.getElementById("query").value.trim();
+  if (!q) {
+    statusEl.textContent = "Pehle movie ka naam likho.";
+    return;
+  }
+  headingEl.textContent = "🔎 Search: " + q;
+  moviesEl.innerHTML = "";
+  statusEl.textContent = "Searching movies...";
+  try {
+    const data = await getData("/search/movie?query=" + encodeURIComponent(q));
+    showMovies(data.results);
+  } catch (err) {
+    statusEl.textContent = "Search failed. Error: " + err.message;
+  }
+}
+
+async function showDetails(movie) {
+  const modal = document.getElementById("modal");
+  const details = document.getElementById("details");
+  modal.style.display = "block";
+  details.innerHTML = "<p>Loading details...</p>";
+  try {
+    const data = await getData("/movie/" + movie.id);
+    details.innerHTML = "";
+    if (data.poster_path) {
+      const img = document.createElement("img");
+      img.src = IMG + data.poster_path;
+      img.alt = data.title || "Movie poster";
+      details.appendChild(img);
+    }
+    const title = document.createElement("h2");
+    title.textContent = data.title || "Movie details";
+    const rating = document.createElement("p");
+    rating.textContent = "⭐ Rating: " + (data.vote_average ? data.vote_average.toFixed(1) : "N/A");
+    const date = document.createElement("p");
+    date.textContent = "Release date: " + (data.release_date || "Unknown");
+    const overview = document.createElement("p");
+    overview.textContent = data.overview || "No description available.";
+    const trailer = document.createElement("p");
+    trailer.innerHTML = '<a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=' +
+      encodeURIComponent((data.title || "") + " official trailer") + '">Watch trailer on YouTube</a>';
+    details.append(title, rating, date, overview, trailer);
+  } catch (err) {
+    details.textContent = "Details load nahi hue: " + err.message;
+  }
+}
+
+function closeDetails() {
+  document.getElementById("modal").style.display = "none";
+}
+
+loadMovies("trending");
+</script>
+</body>
+</html>
